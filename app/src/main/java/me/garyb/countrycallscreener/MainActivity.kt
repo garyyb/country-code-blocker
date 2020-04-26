@@ -1,6 +1,8 @@
 package me.garyb.countrycallscreener
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
@@ -19,11 +21,15 @@ import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-  private val CALL_SCREEN_REQUEST_CODE: Int = 1
+  companion object {
+    const val BLOCKED_CALLS_NOTIFICATION_CHANNEL: String = "BLOCKED_CALLS"
+    private const val CALL_SCREEN_REQUEST_CODE: Int = 1
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     requestCallScreeningRole()
+    registerNotificationChannel()
 
     setContentView(R.layout.activity_main)
 
@@ -50,6 +56,21 @@ class MainActivity : AppCompatActivity() {
       }
     }
     super.onActivityResult(requestCode, resultCode, data)
+  }
+
+  private fun registerNotificationChannel() {
+    val notificationManager: NotificationManager =
+      getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    val channel: NotificationChannel =
+      NotificationChannel(
+        BLOCKED_CALLS_NOTIFICATION_CHANNEL,
+        getString(R.string.blocked_calls_notification_channel_name),
+        NotificationManager.IMPORTANCE_DEFAULT
+      ).apply {
+        description = getString(R.string.blocked_calls_notification_channel_description)
+      }
+    notificationManager.createNotificationChannel(channel)
   }
 
   private fun requestCallScreeningRole() {

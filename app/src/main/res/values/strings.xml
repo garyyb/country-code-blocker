@@ -2,6 +2,14 @@
     <string name="app_name">Country Call Screener</string>
     <string name="title_activity_main">Country Call Screener</string>
 
+    <string name="blocked_calls_notification_channel_name">Blocked calls</string>
+    <string name="blocked_calls_notification_channel_description">Notifications for when calls are blocked by Country Code Screener.</string>
+
+    <string name="blocked_call_notification_title">Call blocked</string>
+
+    <!-- [ICU_SYNTAX] -->
+    <string name="blocked_call_notification_text">A call from {phoneNumber} was blocked.</string>
+
     <string name="allowed_countries_tab_title">Allowed Countries</string>
     <string name="blocked_countries_tab_title">Blocked Countries</string>
 
