@@ -7,7 +7,9 @@ import androidx.fragment.app.FragmentPagerAdapter
 class MainViewPagerAdapter(fm: FragmentManager) :
   FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-  private val NUM_TABS: Int = 2
+  companion object {
+    private const val NUM_TABS: Int = 2
+  }
 
   override fun getCount(): Int = NUM_TABS
 

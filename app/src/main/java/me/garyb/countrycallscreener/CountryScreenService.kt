@@ -16,7 +16,7 @@ class CountryScreenService : CallScreeningService() {
   private lateinit var phoneNumberUtil: PhoneNumberUtil
   private lateinit var defaultCountryCode: String
 
-  private var notification_id = 0
+  private var notificationId = 0
 
   inner class ServiceBinder : Binder() {
     fun getService(): CountryScreenService = this@CountryScreenService
@@ -66,7 +66,7 @@ class CountryScreenService : CallScreeningService() {
         .setAutoCancel(true)
 
     with(NotificationManagerCompat.from(this)) {
-      notify(notification_id++, builder.build())
+      notify(notificationId++, builder.build())
     }
   }
 
