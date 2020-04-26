@@ -1,9 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+<androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/main_view_pager"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context=".MainActivity">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.tabs.TabLayout
+      android:id="@+id/main_tab_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+        <com.google.android.material.tabs.TabItem
+          android:id="@+id/allowed_countries_tab"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:icon="@drawable/baseline_phone_forwarded_black_24"
+          android:text="@string/allowed_countries_tab_title" />
+
+        <com.google.android.material.tabs.TabItem
+          android:id="@+id/blocked_countries_tab"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:icon="@drawable/baseline_phone_missed_black_24"
+          android:text="@string/blocked_countries_tab_title" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+</androidx.viewpager.widget.ViewPager>

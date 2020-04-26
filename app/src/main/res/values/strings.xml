@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Country Call Screener</string>
     <string name="title_activity_main">Country Call Screener</string>
+
+    <string name="allowed_countries_tab_title">Allowed Countries</string>
+    <string name="blocked_countries_tab_title">Blocked Countries</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
