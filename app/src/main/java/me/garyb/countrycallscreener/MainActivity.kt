@@ -7,18 +7,10 @@ import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.telecom.CallScreeningService
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.getSystemService
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
-
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
   companion object {

@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
+import me.garyb.countrycallscreener.countries.Countries
 
 /**
  * Fragment which shows a list of allowed countries and provides options to block them.
@@ -19,6 +22,14 @@ class AllowedCountriesFragment : Fragment() {
   ): View? {
     // Inflate the layout for this fragment
     return inflater.inflate(R.layout.fragment_allowed_countries, container, false)
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    view.findViewById<RecyclerView>(R.id.allowed_countries_recycler_view).apply {
+      adapter =
+        CountryListAdapter(Countries.getInstance(view.context).getLocalizedCountries(), false)
+      addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    }
   }
 
   companion object {
