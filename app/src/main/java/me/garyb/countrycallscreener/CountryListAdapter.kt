@@ -1,13 +1,15 @@
 package me.garyb.countrycallscreener
 
 import android.icu.text.MessageFormat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.button.MaterialButton
 import me.garyb.countrycallscreener.countries.Country
+import org.greenrobot.eventbus.EventBus
 
 class CountryListAdapter(private val countryList: List<Country>, private val blocked: Boolean) :
   RecyclerView.Adapter<CountryListAdapter.ListItemViewHolder>() {
@@ -29,8 +31,16 @@ class CountryListAdapter(private val countryList: List<Country>, private val blo
         )
       }
 
-      view.findViewById<SwitchMaterial>(R.id.blocked_switch).apply {
-        isChecked = blocked
+      view.findViewById<MaterialButton>(R.id.toggle_block_button).apply {
+        text = context.getString(if (blocked) R.string.unblock_button else R.string.block_button)
+        icon =
+          context.getDrawable(if (blocked) R.drawable.round_check_24 else R.drawable.round_block_24)
+        setOnClickListener {
+          EventBus.getDefault().post(
+            if (blocked) UnblockCountriesEvent(listOf(country))
+            else BlockCountriesEvent(listOf(country))
+          )
+        }
       }
     }
 

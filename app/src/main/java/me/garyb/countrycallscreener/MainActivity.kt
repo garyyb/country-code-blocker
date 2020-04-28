@@ -1,5 +1,6 @@
 package me.garyb.countrycallscreener
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -8,9 +9,14 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import me.garyb.countrycallscreener.countries.Country
+import me.garyb.countrycallscreener.countries.CountryDataService
 
 class MainActivity : AppCompatActivity() {
   companion object {
@@ -22,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     requestCallScreeningRole()
     registerNotificationChannel()
+    initializeViewModel()
 
     setContentView(R.layout.activity_main)
 
@@ -65,6 +72,7 @@ class MainActivity : AppCompatActivity() {
     notificationManager.createNotificationChannel(channel)
   }
 
+  @SuppressLint("WrongConstant")
   private fun requestCallScreeningRole() {
     val roleManager: RoleManager = getSystemService(Context.ROLE_SERVICE) as RoleManager
     val intent: Intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
@@ -75,5 +83,12 @@ class MainActivity : AppCompatActivity() {
     Intent(this, CountryScreenService::class.java).also { intent ->
       startService(intent)
     }
+  }
+
+  private fun initializeViewModel() {
+    val allowedCountries: List<Country> =
+      CountryDataService.getInstance(this).getAllowedCountries()
+    val blockedCountries: List<Country> =
+      CountryDataService.getInstance(this).getBlockedCountries()
   }
 }
