@@ -9,14 +9,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
-import me.garyb.countrycallscreener.countries.Country
-import me.garyb.countrycallscreener.countries.CountryDataService
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 class MainActivity : AppCompatActivity() {
   companion object {
@@ -28,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     requestCallScreeningRole()
     registerNotificationChannel()
-    initializeViewModel()
 
     setContentView(R.layout.activity_main)
 
@@ -45,6 +41,11 @@ class MainActivity : AppCompatActivity() {
     tabLayout.getTabAt(1)!!.icon = getDrawable(R.drawable.baseline_phone_missed_24)
   }
 
+  override fun onStart() {
+    super.onStart()
+    EventBus.getDefault().register(this)
+  }
+
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     if (requestCode == CALL_SCREEN_REQUEST_CODE) {
       if (resultCode == Activity.RESULT_OK) {
@@ -55,6 +56,16 @@ class MainActivity : AppCompatActivity() {
       }
     }
     super.onActivityResult(requestCode, resultCode, data)
+  }
+
+  override fun onStop() {
+    EventBus.getDefault().unregister(this)
+    super.onStop()
+  }
+
+  @Subscribe
+  fun onBlockedCountriesChangedEvent(event: BlockedCountriesChangedEvent) {
+    startCallScreenService()
   }
 
   private fun registerNotificationChannel() {
@@ -83,12 +94,5 @@ class MainActivity : AppCompatActivity() {
     Intent(this, CountryScreenService::class.java).also { intent ->
       startService(intent)
     }
-  }
-
-  private fun initializeViewModel() {
-    val allowedCountries: List<Country> =
-      CountryDataService.getInstance(this).getAllowedCountries()
-    val blockedCountries: List<Country> =
-      CountryDataService.getInstance(this).getBlockedCountries()
   }
 }

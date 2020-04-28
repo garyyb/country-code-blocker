@@ -1,5 +1,6 @@
 package me.garyb.countrycallscreener
 
+import android.content.Intent
 import android.icu.text.MessageFormat
 import android.net.Uri
 import android.os.Binder
@@ -10,17 +11,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
+import me.garyb.countrycallscreener.countries.Country
+import me.garyb.countrycallscreener.countries.CountryDataService
 
 class CountryScreenService : CallScreeningService() {
-  private val binder: ServiceBinder = ServiceBinder()
   private lateinit var phoneNumberUtil: PhoneNumberUtil
   private lateinit var defaultCountryCode: String
+  private lateinit var blockedCountries: List<Country>
 
   private var notificationId = 0
-
-  inner class ServiceBinder : Binder() {
-    fun getService(): CountryScreenService = this@CountryScreenService
-  }
 
   private fun respondAllow(callDetails: Call.Details) {
     respondToCall(
@@ -76,6 +75,14 @@ class CountryScreenService : CallScreeningService() {
     defaultCountryCode = resources.configuration.locales[0].country
   }
 
+  // We can't pass data through binding because CallScreeningService::onBind already returns its
+  // own binder. So we use onStartCommand as a 'signal' to refetch the data. Main thread code can
+  // then just call startService() to notify the service to re-fetch data.
+  override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+    blockedCountries = CountryDataService.getInstance(this).getBlockedCountries()
+    return super.onStartCommand(intent, flags, startId)
+  }
+
   override fun onScreenCall(callDetails: Call.Details) {
     Log.i(
       "CountryCallScreener",
@@ -86,7 +93,7 @@ class CountryScreenService : CallScreeningService() {
       phoneNumberUtil.parse(Uri.decode(callDetails.handle.toString()), defaultCountryCode)
 
     if (number.hasCountryCode() &&
-      number.countryCode == phoneNumberUtil.getCountryCodeForRegion("CN")
+      blockedCountries.find { it.phoneCountryCode == number.countryCode } != null
     ) {
       respondDisallow(callDetails)
       showBlockedNotification(number)
