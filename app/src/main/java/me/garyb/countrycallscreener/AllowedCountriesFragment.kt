@@ -50,7 +50,9 @@ class AllowedCountriesFragment : Fragment() {
     viewModel.allowedCountries.observe(viewLifecycleOwner, Observer { allowedCountries ->
       view.findViewById<RecyclerView>(R.id.allowed_countries_recycler_view).apply {
         adapter = CountryListAdapter(allowedCountries, false)
-        addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        if (itemDecorationCount == 0) {
+          addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
       }
     })
   }

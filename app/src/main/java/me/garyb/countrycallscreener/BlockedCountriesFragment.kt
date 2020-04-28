@@ -48,7 +48,9 @@ class BlockedCountriesFragment : Fragment() {
     viewModel.blockedCountries.observe(viewLifecycleOwner, Observer { blockedCountries ->
       view.findViewById<RecyclerView>(R.id.blocked_countries_recycler_view).apply {
         adapter = CountryListAdapter(blockedCountries, true)
-        addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        if (itemDecorationCount == 0) {
+          addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
       }
     })
   }
