@@ -73,6 +73,7 @@ class CountryScreenService : CallScreeningService() {
     Log.i("CountryCallScreener", "CountryScreenService created")
     phoneNumberUtil = PhoneNumberUtil.createInstance(this)
     defaultCountryCode = resources.configuration.locales[0].country
+    blockedCountries = CountryDataService.getInstance(this).getBlockedCountries()
   }
 
   // We can't pass data through binding because CallScreeningService::onBind already returns its
