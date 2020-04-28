@@ -34,7 +34,7 @@ class CountryDataService private constructor(context: Context) {
         ) ?: ""
       )
     }.filter { country ->
-      country.displayName.isNotEmpty()
+      country.displayName.isNotEmpty() && country.phoneCountryCode != 0
     }.sortedBy { country ->
       country.displayName
     }

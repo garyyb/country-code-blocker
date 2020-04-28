@@ -18,4 +18,18 @@
 
     <string name="block_button">Block</string>
     <string name="unblock_button">Unblock</string>
+
+    <!-- Title for confirmation dialog when the user blocks a region which shares country code
+         with other regions. -->
+    <string name="multiple_block_dialog_title">Block multiple regions?</string>
+
+    <!-- Description for confirmation dialog when the user blocks a region which shares country code
+         with other regions. [ICU_SYNTAX]  -->
+    <string name="multiple_block_dialog_description">
+        {selectedCountry} shares calling code with {otherSelectedCountries}, and as such all of
+        these regions would be blocked.
+    </string>
+
+    <string name="multiple_block_dialog_confirm">Confirm</string>
+    <string name="multiple_block_dialog_cancel">Cancel</string>
 </resources>
