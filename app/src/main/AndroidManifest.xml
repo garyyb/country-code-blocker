@@ -11,18 +11,19 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
       tools:ignore="GoogleAppIndexingWarning">
+
         <service
-          android:name=".CountryScreenService"
-          android:permission="android.permission.BIND_SCREENING_SERVICE"
+          android:name=".blocker.CountryScreenService"
           android:enabled="true"
-          android:exported="true">
+          android:exported="true"
+          android:permission="android.permission.BIND_SCREENING_SERVICE">
             <intent-filter>
-                <action android:name="android.telecom.CallScreeningService"/>
+                <action android:name="android.telecom.CallScreeningService" />
             </intent-filter>
         </service>
 
         <activity
-          android:name=".MainActivity"
+          android:name=".blocker.BlockerActivity"
           android:label="@string/title_activity_main"
           android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -31,6 +32,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+          android:name=".history.HistoryActivity"
+          android:label="@string/title_activity_history"
+          android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

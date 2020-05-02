@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/history_nav_graph"
+  app:startDestination="@id/history_fragment">
+
+    <fragment
+        android:id="@+id/history_fragment"
+        android:name="me.garyb.countrycallscreener.history.HistoryFragment"
+        android:label="Call history"
+        tools:layout="@layout/fragment_history">
+
+        <action
+            android:id="@+id/history_fragment_to_blocker_activity"
+            app:destination="@id/blocker_activity"
+            app:popUpTo="@id/history_fragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/blocker_activity"
+        android:name="me.garyb.countrycallscreener.blocker.BlockerActivity"
+        android:label="Call blocker"
+        tools:layout="@layout/activity_blocker" />
+
+</navigation>

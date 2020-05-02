@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/main_nav_graph"
+  app:startDestination="@id/blocker_fragment">
+    <fragment
+        android:id="@+id/blocker_fragment"
+        android:name="me.garyb.countrycallscreener.blocker.BlockerFragment"
+        android:label="Blocker"
+        tools:layout="@layout/fragment_blocker">
+
+        <action
+            android:id="@+id/blocker_fragment_to_history_activity"
+            app:destination="@id/history_activity"
+            app:popUpTo="@id/blocker_fragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/history_activity"
+        android:name="me.garyb.countrycallscreener.history.HistoryActivity"
+        android:label="Blocked Calls"
+        tools:layout="@layout/activity_history" />
+
+</navigation>

@@ -1,4 +1,4 @@
-package me.garyb.countrycallscreener
+package me.garyb.countrycallscreener.blocker
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

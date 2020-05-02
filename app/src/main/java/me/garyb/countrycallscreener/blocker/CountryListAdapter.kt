@@ -1,13 +1,13 @@
-package me.garyb.countrycallscreener
+package me.garyb.countrycallscreener.blocker
 
 import android.icu.text.MessageFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import me.garyb.countrycallscreener.R
 import me.garyb.countrycallscreener.countries.Country
 import org.greenrobot.eventbus.EventBus
 

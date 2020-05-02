@@ -1,4 +1,4 @@
-package me.garyb.countrycallscreener
+package me.garyb.countrycallscreener.blocker
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -10,12 +10,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import androidx.core.view.updatePadding
+import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.findNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import me.garyb.countrycallscreener.R
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
-class MainActivity : AppCompatActivity() {
+class BlockerActivity : AppCompatActivity() {
   companion object {
     const val BLOCKED_CALLS_NOTIFICATION_CHANNEL: String = "BLOCKED_CALLS"
     private const val CALL_SCREEN_REQUEST_CODE: Int = 1
@@ -26,24 +29,34 @@ class MainActivity : AppCompatActivity() {
     requestCallScreeningRole()
     registerNotificationChannel()
 
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.activity_blocker)
 
-    val viewPager: ViewPager = findViewById(R.id.main_view_pager)
-    viewPager.adapter = MainViewPagerAdapter(supportFragmentManager)
-
-    val tabLayout: TabLayout = findViewById(R.id.main_tab_layout)
-    tabLayout.setupWithViewPager(viewPager)
-
-    tabLayout.getTabAt(0)!!.text = getString(R.string.allowed_countries_tab_title)
-    tabLayout.getTabAt(0)!!.icon = getDrawable(R.drawable.baseline_phone_forwarded_24)
-
-    tabLayout.getTabAt(1)!!.text = getString(R.string.blocked_countries_tab_title)
-    tabLayout.getTabAt(1)!!.icon = getDrawable(R.drawable.baseline_phone_missed_24)
+    findViewById<BottomNavigationView>(R.id.bottom_nav_view).apply {
+      selectedItemId = R.id.blocker
+      setOnNavigationItemSelectedListener { menuItem ->
+        when {
+          menuItem.itemId == R.id.blocker -> true
+          menuItem.itemId == R.id.call_log -> {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.blocker_fragment_to_history_activity)
+            true
+          }
+          else -> false
+        }
+      }
+    }
   }
 
   override fun onStart() {
     super.onStart()
     EventBus.getDefault().register(this)
+  }
+
+  override fun onAttachedToWindow() {
+    super.onAttachedToWindow()
+
+    findViewById<FragmentContainerView>(R.id.nav_host_fragment).apply {
+      updatePadding(top = window.decorView.rootWindowInsets.stableInsetTop)
+    }
   }
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -87,7 +100,10 @@ class MainActivity : AppCompatActivity() {
   private fun requestCallScreeningRole() {
     val roleManager: RoleManager = getSystemService(Context.ROLE_SERVICE) as RoleManager
     val intent: Intent = roleManager.createRequestRoleIntent(RoleManager.ROLE_CALL_SCREENING)
-    startActivityForResult(intent, CALL_SCREEN_REQUEST_CODE)
+    startActivityForResult(
+      intent,
+      CALL_SCREEN_REQUEST_CODE
+    )
   }
 
   private fun startCallScreenService() {

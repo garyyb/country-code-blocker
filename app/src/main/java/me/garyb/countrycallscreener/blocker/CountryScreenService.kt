@@ -1,9 +1,8 @@
-package me.garyb.countrycallscreener
+package me.garyb.countrycallscreener.blocker
 
 import android.content.Intent
 import android.icu.text.MessageFormat
 import android.net.Uri
-import android.os.Binder
 import android.telecom.Call
 import android.telecom.CallScreeningService
 import android.util.Log
@@ -11,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
+import me.garyb.countrycallscreener.R
 import me.garyb.countrycallscreener.countries.Country
 import me.garyb.countrycallscreener.countries.CountryDataService
 
@@ -47,7 +47,9 @@ class CountryScreenService : CallScreeningService() {
 
   private fun showBlockedNotification(phoneNumber: Phonenumber.PhoneNumber) {
     val builder: NotificationCompat.Builder =
-      NotificationCompat.Builder(this, MainActivity.BLOCKED_CALLS_NOTIFICATION_CHANNEL)
+      NotificationCompat.Builder(this,
+        BlockerActivity.BLOCKED_CALLS_NOTIFICATION_CHANNEL
+      )
         .setSmallIcon(R.drawable.ic_blocked_call_notification)
         .setContentTitle(getString(R.string.blocked_call_notification_title))
         .setContentText(

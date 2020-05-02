@@ -3,7 +3,7 @@ package me.garyb.countrycallscreener.countries
 import android.content.Context
 import android.content.SharedPreferences
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
-import me.garyb.countrycallscreener.BlockedCountriesChangedEvent
+import me.garyb.countrycallscreener.blocker.BlockedCountriesChangedEvent
 import me.garyb.countrycallscreener.util.SingletonHolder
 import org.greenrobot.eventbus.EventBus
 import java.util.*
