@@ -10,14 +10,20 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import io.michaelrocks.libphonenumber.android.Phonenumber
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import me.garyb.countrycallscreener.R
 import me.garyb.countrycallscreener.countries.Country
 import me.garyb.countrycallscreener.countries.CountryDataService
+import me.garyb.countrycallscreener.history.database.CallHistoryDatabase
+import me.garyb.countrycallscreener.history.database.CallHistoryDatabaseProvider
+import me.garyb.countrycallscreener.history.model.CallHistoryEntity
 
 class CountryScreenService : CallScreeningService() {
   private lateinit var phoneNumberUtil: PhoneNumberUtil
   private lateinit var defaultCountryCode: String
   private lateinit var blockedCountries: List<Country>
+  private lateinit var callHistoryDatabase: CallHistoryDatabase
 
   private var notificationId = 0
 
@@ -47,7 +53,8 @@ class CountryScreenService : CallScreeningService() {
 
   private fun showBlockedNotification(phoneNumber: Phonenumber.PhoneNumber) {
     val builder: NotificationCompat.Builder =
-      NotificationCompat.Builder(this,
+      NotificationCompat.Builder(
+        this,
         BlockerActivity.BLOCKED_CALLS_NOTIFICATION_CHANNEL
       )
         .setSmallIcon(R.drawable.ic_blocked_call_notification)
@@ -71,11 +78,23 @@ class CountryScreenService : CallScreeningService() {
     }
   }
 
+  private fun storeBlockedNumber(callDetails: Call.Details) {
+    GlobalScope.launch {
+      callHistoryDatabase.callHistoryDao().insertAll(
+        CallHistoryEntity(
+          phoneUri = Uri.decode(callDetails.handle.toString()),
+          creationTimeMs = callDetails.creationTimeMillis
+        )
+      )
+    }
+  }
+
   override fun onCreate() {
     Log.i("CountryCallScreener", "CountryScreenService created")
     phoneNumberUtil = PhoneNumberUtil.createInstance(this)
     defaultCountryCode = resources.configuration.locales[0].country
     blockedCountries = CountryDataService.getInstance(this).getBlockedCountries()
+    callHistoryDatabase = CallHistoryDatabaseProvider.getInstance(applicationContext).db
   }
 
   // We can't pass data through binding because CallScreeningService::onBind already returns its
@@ -100,6 +119,7 @@ class CountryScreenService : CallScreeningService() {
     ) {
       respondDisallow(callDetails)
       showBlockedNotification(number)
+      storeBlockedNumber(callDetails)
     } else {
       respondAllow(callDetails)
     }

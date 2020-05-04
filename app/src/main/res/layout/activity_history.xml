@@ -6,15 +6,38 @@
   android:layout_height="match_parent"
   tools:context=".history.HistoryActivity">
 
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:id="@+id/history_app_bar_coordinator"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+              android:layout_width="match_parent"
+              android:layout_height="?attr/actionBarSize"
+              android:background="@color/white"
+              app:title="@string/title_activity_history" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <!-- 0dp layout_height = match_constraints = stretch height to fit constraints -->
     <androidx.fragment.app.FragmentContainerView
       android:id="@+id/history_nav_host_fragment"
       android:name="androidx.navigation.fragment.NavHostFragment"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
+      android:layout_height="0dp"
       app:layout_constraintBottom_toTopOf="@id/bottom_coordinator"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/history_app_bar_coordinator"
       app:navGraph="@navigation/history_nav_graph" />
 
     <include layout="@layout/bottom_nav_bar" />

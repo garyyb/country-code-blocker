@@ -4,4 +4,6 @@
     <color name="colorPrimaryVariant">#0D47A1</color>
     <color name="colorSecondary">#E1BEE7</color>
     <color name="colorSecondaryVariant">#B39DDB</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>
