@@ -18,6 +18,7 @@ class HistoryActivity : AppCompatActivity() {
         when {
           menuItem.itemId == R.id.blocker -> {
             findNavController(R.id.history_nav_host_fragment).navigate(R.id.history_fragment_to_blocker_activity)
+            finish()
             true
           }
           menuItem.itemId == R.id.call_log -> {

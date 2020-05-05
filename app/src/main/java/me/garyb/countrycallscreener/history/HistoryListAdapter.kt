@@ -10,6 +10,7 @@ import me.garyb.countrycallscreener.R
 import me.garyb.countrycallscreener.history.model.CallHistoryDetails
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -38,7 +39,8 @@ class HistoryListAdapter(private val callHistoryDetailsList: List<CallHistoryDet
               "h:mm a",
               resources.configuration.locales[0]
             ).format(Date.from(creationInstant))
-            todayInstant.truncatedTo(ChronoUnit.YEARS) == creationInstant.truncatedTo(ChronoUnit.YEARS) -> SimpleDateFormat(
+            todayInstant.atZone(ZoneId.systemDefault()).year ==
+                creationInstant.atZone(ZoneId.systemDefault()).year -> SimpleDateFormat(
               "MMM d",
               resources.configuration.locales[0]
             ).format(Date.from(creationInstant))

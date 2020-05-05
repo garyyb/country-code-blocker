@@ -38,6 +38,7 @@ class BlockerActivity : AppCompatActivity() {
           menuItem.itemId == R.id.blocker -> true
           menuItem.itemId == R.id.call_log -> {
             findNavController(R.id.nav_host_fragment).navigate(R.id.blocker_fragment_to_history_activity)
+            finish()
             true
           }
           else -> false
